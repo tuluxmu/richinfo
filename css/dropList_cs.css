@@ -1,0 +1,13 @@
+/* CSS Document */
+
+/*下拉菜单*/
+.dropList_cs{ display:inline-block; height:24px; border:1px solid #ddd; position:relative; z-index:1}
+.DLicon{ width:24px; height:24px; position:absolute; right:0px; top:0px; text-align:center; line-height:22px; cursor:pointer; background-color:#f1f1f1; overflow:hidden;}
+a.DLicon:hover,a.DLiconAct{}
+.DivUp{ z-index:9;}
+.i-DLicon{ width:9px; height:6px; display:inline-block; background:url(../images/ico_sprite.png) no-repeat -0px -24px; *margin-top:10px;}
+.DLtxt{ line-height:24px; display:inline-block; padding:0 25px 0 5px;}
+.dropList_csUL{ border:1px solid #ddd; background-color:#fff; position:absolute; left:-1px; top:24px; width:100%; display:none; z-index:10;}
+.dropList_csUL li{ display:table; width:100%;}
+.dropList_csUL li a{ padding:5px; display:block;}
+.dropList_csUL li a:hover{ background-color:#f9f9f9; text-decoration:none;}

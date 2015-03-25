@@ -1,0 +1,138 @@
+﻿/* CSS Document */
+
+/*弹出层*/
+.shareLayer{display:none;position:absolute;z-index:2100;left:0;top:0;width:100%;height:100%;background-color:#000;opacity:0.5;filter: alpha(opacity=50);  *zoom: 1;}
+.shareLayer *{ _display: none;}
+.shareLayer img{width:100%;height:100%;}
+.shareLayer2{display:none;position:absolute;z-index:2100;left:0;top:0;width:100%;height:100%;}
+.shareLayer img{width:100%;height:100%;}
+.dialogBox{display:none;position:absolute;z-index:2200;}
+.dialogBox h2{position:relative;z-index:0;height:27px;line-height:27px;text-align:left;text-indent:5px; color: #444; font-weight: normal;}
+.dialogBox h2 .l, .dialogBox h2 .r, .dialogBox h2 .close{float:none;position:absolute;top:0;height:29px;background-image:url(../images/skin_1.png);background-repeat:no-repeat;}
+.dialogBox h2 .l, .dialogBox h2 .r{width:6px;}
+.dialogBox h2 .l{left:0;background-position:0 -200px;}
+.dialogBox h2 .r{right:0;background-position:-250px -200px;}
+.dialogBox h2 .close{right:8px;width:10px;background-position:-500px -191px;}
+.dialogBox h2 .close:hover{background-position:-750px -191px;}
+.dialogBox .dialogBoxCon{background-color:white;clear:both;*zoom:1;}
+.dialogBox input.text{height:18px;}
+
+#opactity{display:none;position:absolute;z-index:999;left:0;top:0;width:100%;height:100%;background-color:black;opacity:0.05;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=5)";#filter:alpha(opacity=5);}
+#opactity img{width:100%;height:100%;}
+
+/*弹出框*/
+.dialogBoxTitle {position: relative;}
+.dialogBoxTitle h2 {height: 27px;line-height: 27px;padding-left: 10px; color:#fff;}
+.dialogBoxBtm a {margin-right: 10px;}
+.dialogBoxBtm{text-align:right;height: 40px;}
+.i-diaClose {display: block;height:20px;position: absolute;right: 5px;top: 3px; width: 20px; background-repeat: no-repeat;}
+.i-diaClose:hover{ text-decoration:none;background-repeat: no-repeat;}
+
+/*图标*/
+.i-arrsDown,.i-arrsRight{display:inline-block; background-repeat: no-repeat;}
+.i-arrsRight,.i-arrsDown{width:14px;height:14px; vertical-align:-2px;*vertical-align:0px;}
+/*群组添加*/
+.i-ab-dele,.i-abMid{display:inline-block;background:url(../images/addr/contact.png) no-repeat;}
+.i-ab-dele{width:12px;height:12px;background-position:-111px -149px;}
+.i-ab-dele:hover{background-position:-24px -136px;}
+.dialogBoxBtm a {margin-right: 10px;}
+.dialogBoxBtm{text-align:right;height: 40px;}
+.i-diaClose {display: block;height:20px;position: absolute;right: 5px;top: 3px; width: 20px; background-repeat: no-repeat;}
+.i-diaClose:hover{ text-decoration:none;background-repeat: no-repeat;}
+.i-abMid{width:18px;height:21px;background-position:-29px -149px;}
+
+/*按钮 abBtn*/
+.abBtn,.abBtn_slide,.abBtn_slide span,.abBtn_slide span span{ display:inline-block; height:25px; line-height:25px;  cursor:pointer;}
+.abBtn span span{padding:0 10px;}
+.abBtn_slide span span{ padding:0 20px 0 7px; }
+.abBtn span span,.abBtn_slide span span{color:#666;}
+.abBtn:hover,.abBtn_on:hover,.abBtn_slide:hover{ text-decoration:none;}
+.abBtn_slide span span{ position:relative;}
+.abBtn_slide span span i{ display:block; width:7px; height:5px; position:absolute; top:10px; right:6px; background:url(../images/edit.png) no-repeat 0 -86px;}
+.font-bold span span{ font-weight:bold;}
+
+.abBtn:hover,.abBtn:hover span,.abBtn:hover span span,.abBtn_slide:hover,.abBtn_slide:hover span,.abBtn_slide:hover span span{text-decoration:none;}
+.abBtn:hover span span{ padding:0 10px;}
+.abBtn_slide:hover span span{ padding:0 20px 0 7px;}
+
+.abBtn:active,.abBtn:active span,.abBtn:active span span,.abBtn_slide:active,.abBtn_slide:active span,.abBtn_slide:active span span{text-decoration:none;}
+.abBtn:active span span{padding:0 10px;}
+.abBtn_slide:active span span{  padding:0 20px 0 7px;}
+
+
+/*按钮 abBtn_on*/
+.abBtn_on span span{ color:#fff;}
+.abBtn_on,.abBtn_on span,.abBtn_on span span{ display:inline-block; height:25px; line-height:25px;  cursor:pointer;}
+.abBtn_on{ border-style: solid; border-width: 1px;}
+.abBtn_on span span{ padding:0 15px; color:#fff;}
+
+.abBtn_on:hover,.abBtn_on:hover span,.abBtn_on:hover span span{text-decoration:none;}
+.abBtn_on:hover span span{ padding: 0 15px;}
+
+.abBtn_on:active,.abBtn_on:active span,.abBtn_on:active span span{text-decoration:none;}
+.abBtn_on:active span span{ padding:0 15px;}
+
+
+/*换肤颜色独立*/
+.ab_search_btn ,.i-arrsDown, .i-arrsRight, .setSign-box-til i.i-sli, .setSign-box-til i.i-sli-show, .i_senior_sli, .i_senior_sli_on{background-image: url(../images/mail_icoGroup.png); background-repeat:no-repeat; display:inline-block;}
+.i-addGroup{background-image: url(../images/mailGroup.png); background-repeat:no-repeat;background-position:0 0; display:inline-block; width:18px; height:15px;}
+.i-addGroup:hover{background-position:-30px 0;}
+.dialogBoxTitle h2 {background:#3b7ec2;color: #fff;}
+.dialogBoxBtm {background-color: #fafafa;}
+.ab_search_btn {background-color: #fff;background-position: -425px 4px;}
+.i-arrsRight {background-position: -449px 4px;}
+.i-arrsDown {background-position: -464px 6px;}
+.i-diaClose {background-position: -155px 0;}
+.i-diaClose, .i-diaClose:hover {background-image: url(../images/chinagas/r_cls.png);}
+.abBtn_on {background: none repeat #00b615;border-color: #00b615;}
+.abBtn, .abBtn_slide {background: none repeat #f8f8f8;border: 1px solid #e2e2e2;}
+.i-diaClose {background-position: -155px 0;}
+.i-diaClose, .i-diaClose:hover {background-image: url(../images/r_cls.png);}
+.i-diaClose:hover {background-position: -120px 0;}
+
+/*公用小图标*/
+.i-wdown,.i-bdown,.i-plus,.i-plus2,.i-back,.i-cls,.i-sq,.i-zk,.i-wcls,.i-pmt,.i-arrowlt,.i-gcls,.s-down,.i-gl,.i-qm,.i-rowLt,.i-rowBtm,.i-down,.i-up,.i-dragable,.i-undragable,.i-dragico,.i-lpen,.i-pin,.i-crown{ background-image:url(../images/ico_sprite.png); background-repeat:no-repeat; vertical-align:middle;}
+
+.i-wdown{ width:9px; height:5px; background-position:0 0;}
+.i-bdown{ width:9px; height:5px; background-position:0 -24px;}
+.i-plus{ width:13px; height:13px;  background-position:-16px 0;}
+.i-plus2{width:13px; height:13px;  background-position:-16px -24px;}
+.i-back{ width:30px; height:30px; background-position:-400px 0;}
+.i-kong{width:30px; height:30px;}
+.i-cls{ width:11px; height:11px; background-position:-58px 0;}
+.i-wcls{ width:11px; height:11px; background-position:-58px -24px;}
+.i-gcls{ width:9px; height:9px; background-position:-59px -45px;}
+.i-gcls:hover{background-position:-59px -65px;}
+.i-sq{ width:9px; height:9px; background-position:-79px 0;}
+.i-zk{ width:9px; height:9px; background-position:-98px 0;}
+.i-pmt{ width:40px; height:40px; background-position:-400px -40px;}
+.i-arrowlt{ width:33px; height:24px; background-position:-400px -90px;}
+.s-down{ width:7px; height:4px; background-position:0 -40px;}
+.i-gl{ width:38px; height:38px; background-position:-400px -124px;}
+.i-qm{ width:15px; height:15px; background-position:-117px 0;}
+.i-rowLt{ width:5px; height:9px; background-position:0 -55px;}
+.i-rowBtm{width:9px; height:5px;background-position:-13px -55px;}
+.i-down{width:10px;height:13px;background-position:0 -80px;}
+.i-up{width:10px;height:13px;background-position:-17px -80px;}
+.i-dragable{ width: 10px; height: 10px;background-position:-355px 0;}
+.i-undragable{width: 10px; height: 10px;background-position:-353px -24px;}
+.i-dragico{ width: 13px; height: 13px;background-position:-353px -46px;}
+.i-lpen{width: 13px; height: 13px; background-position: -192px 0;}
+.i-pin{width: 7px; height: 12px; background-position: -215px 0;}
+.i-crown{ width: 13px; height: 12px; background-position: -232px 0;}
+
+
+
+/*简易提示框*/
+.Dialog_alert { padding: 20px; }
+
+
+.simpleWarm { min-height: 40px; height: 100% !important; height: 40px; overflow: visible;/*超出得部分不剪切，也不加滚动条*/ ; text-align: left; }
+
+
+
+/*左右字段信息编排*/
+.Dialog_Iist{ padding:20px;}
+.framedl {clear:both; *zoom:1; padding:6px 0; }
+.framedl dt { float: left; overflow: hidden;padding-right: 5px; text-align: right; text-overflow: ellipsis; white-space: nowrap; width: 90px; }
+.framedl dd {overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
