@@ -15,6 +15,8 @@
 		var a = new select({
 		domId:"#selectTest",
 			list:[{"text":"第一个选项","value":"222"},{"text":"第二个选项","value":"222"}]
-		}).render();
+		}).render().on("change",function(v){
+			alert("你选择的值为:"+v);
+		});
 	})
 })
