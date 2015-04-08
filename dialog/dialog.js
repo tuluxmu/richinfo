@@ -30,25 +30,33 @@ var Dialog = Widget.extend({
 	maskTemp:'<div class="shareLayer"  style="display: block; height:700px;"></div>',
 	initialize:function(){
 		var p = this;
-		this.cfg={
-			id:"dialog"+new Date().getTime(),
-		  	title:"提示",
-		    width:  360,
-			height: 80,
-		    zindex:  999,
-			hasMask:true,
-			skinClassName:"dialogBox",
-		    buttons: [
-		        {
-		            text: "确定",
-					btnType:"ok",
-					className:"abBtn_on",
-					clickEvent:$.proxy(this._closeDialog,this)
-				}
-		    ]
-	  	}
+        this.cfg = {
+            id : "dialog"+new Date().getTime(),
+            title:"提示",
+                width:  360,
+                height: 80,
+                zindex:  999,
+                hasMask:true,
+                skinClassName:"dialogBox",
+                buttons: [
+                {
+                    text: "确定",
+                    btnType:"ok",
+                    className:"abBtn_on",
+                    clickEvent:$.proxy(this._closeDialog,this)
+                }
+            ]
+        }
 	},
-	alert:function(ao){
+	events:{
+        "click a":function(e){
+            var target = $(e.currentTarget);
+            var btnType =$(this).attr("btnType") || "";
+            this.trigger(btnType);
+            this._closeDialog();
+        }
+    },
+    alert:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
 		cfg.content='<!--Dialog_alert-->'
      +  ' <div class="Dialog_alert">'
@@ -79,7 +87,7 @@ var Dialog = Widget.extend({
 		if(!this.cfg.hasButton){
 			this.cfg.buttons=[];
 		}
-		this.cfg = $.extend(this.cfg,cfg)
+		this.cfg = $.extend(this.cfg,this.cfg)
 		this.render();
 	},
 	_closeDialog:function(){
@@ -87,20 +95,9 @@ var Dialog = Widget.extend({
 	},
 	confirm:function(ao,callback){
 		var cfg={},p = this ;
-		this.cfg.buttons.push({
-				 text: "取消",
-				 btnType:"cancel",
-				className:"abBtn",
-				clickEvent:$.proxy(this._closeDialog,this)
-		})
-		this.cfg.title="确认提示";
-		if(typeof(ao)==="string"){
-			cfg.content = ao;
-			this.cfg.buttons[0].clickEvent = callback;
-		}else{
-			cfg = ao;
-		}
-		cfg.content= ' <div class="Dialog_alert">'
+        typeof(ao)==="string"?cfg.content = ao:cfg = ao;
+        cfg.id = "dialog"+new Date().getTime();
+        cfg.content= ' <div class="Dialog_alert">'
        +    ' <table class="simpleWarm">'
         +    '  <tbody>'
         +     '   <tr>'
@@ -110,7 +107,16 @@ var Dialog = Widget.extend({
        +     '  </tbody>'
        +    ' </table>'
      + '  </div>';
-		this.render($.extend(this.cfg,cfg));
+        this.cfg= $.extend(cfg,this.cfg);
+        typeof(ao)==="string"?this.cfg.buttons[0].clickEvent = callback:"";
+        this.cfg.buttons.push({
+            text: "取消",
+            btnType:"cancel",
+            className:"abBtn",
+            clickEvent:$.proxy(this._closeDialog,this)
+        })
+        this.cfg.title="确认提示";
+		this.render(this.cfg);
 	},
 	_setupMask:function(){
 		if (this.mask) {
@@ -147,16 +153,27 @@ var Dialog = Widget.extend({
 			}
 		})
 	},
+    _setDiaglogLocation:function(wrap){
+            var $window = $(parent.window),
+                $document = $(parent.document),
+                dl = $document.scrollLeft(),
+                dt = $document.scrollTop(),
+                ww = $window.width(),
+                wh = $window.height(),
+                ow = wrap.offsetWidth,
+                oh = wrap.offsetHeight,
+                left = (ww - ow) / 2 + dl,
+                top = (wh - oh) * 382 / 1000 + dt,// 黄金比例
+                style = wrap.style;
+
+            style.left = Math.max(parseInt(left), dl) + 'px';
+            style.top = Math.max(parseInt(top), dt) + 'px';
+    },
 	bindEvent:function(){
 		var p = this,buttons = this.cfg.buttons;
 		for(var i=0,j=buttons.length;i<j;i++){
 			p.on(buttons[i].btnType,buttons[i].clickEvent);
 		}
-		this.$el.on("click","a",function(){
-			var btnType =$(this).attr("btnType") || "";
-			p.trigger(btnType);
-			p._closeDialog();
-		})
 	}
 });
 module.exports = Dialog;

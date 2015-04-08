@@ -4,18 +4,23 @@
 <head>
 <link rel="stylesheet" type="text/css" href="../css/public_cn.css"/>
 <script type="text/javascript" src="../comm/sea.js"></script>
-<script type="text/javascript" src="../comm/class.js"></script>
+<script type="text/javascript" src="../base/class.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
 seajs.config({
 	alias:{
 		"jquery":"../comm/jquery",
-		"widget":"../comm/widget",
+		"widget":"../base/widget",
 		"select":"../select/select",
 		"dialog":"../dialog/dialog",
 		"dialogBox":"../css/dialogBox.css",
 		"dropList_cs":"../css/dropList_cs.css",
-		"test":"../examples/test"
-	}
+		"template":"../comm/template",
+		"test":"../examples/test",
+		"placeholder":"../placeholder/placeholder",
+		"list":"../list/list",
+		"listTable":"../css/listTable_tr_cs.css"
+		}
 })
 seajs.use("test");
 </script>
@@ -25,5 +30,10 @@ seajs.use("test");
 <input type="button" id="btnOk" value="确认对话框" />
 <input type="button" id="btnSelect" value="下拉列表框" />
 <div id="selectTest"></div>
+<input type="text"  placeholder="用户名" />
+<input type="password"   placeholder="密码" />
+<script type="text/javascript" src="../placeholder/placeholder.js"></script>
+<div id="list"></div>
+
 </body>
 </html>﻿
