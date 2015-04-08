@@ -36,11 +36,13 @@
                 this.trigger("click");
             }
         },
+        //创建缓存对象,用HASH存储
         _cacheData:function(){
             for(var i= 0,len=this.cfg.list.length;i<len;i++){
                 this._hashList[this.cfg.list[i][this.cfg.datakey]] = this.cfg.list[i];
             }
         },
+        //添加一行数据
 		addOption:function(option){
             this._hashList[option[this.cfg.datakey]] = option;
             this.render();
@@ -48,13 +50,16 @@
         getDataByKey:function(key){
             return this.hashList[key];
         },
+        //得到选中的数据,返回整行数据对象
 		getOption:function(){
 			return this.hashList[this.$el.find(".DLtxt").attr("key")];
 		},
+        //移除指定的一列
 		removeOption:function(key){
             this._hashList[key].remove();
             this.render();
 		},
+        //设置为禁用状态
 		setDisabled:function(){
 			this.$el.off();
 		},
@@ -66,9 +71,11 @@
             this.delegateEvents();
 			return this;
 		},
+        //设置选中的结果
 		_selectOption:function(key,text){
 			this.$el.find(".DLtxt").html(text).attr("key",key);
 		},
+        //隐藏列表
 		_hideList:function(){
 			this.$el.find(".dropList_csUL").hide();
 			this.$el.find('.dropList_cs').removeClass('DivUp');

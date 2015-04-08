@@ -18,10 +18,19 @@
 			list:[{"text":"第一个选项","value":"111"},{"text":"第二个选项","value":"222"}]
 		}).render();
 	})
-    var l = new list({
-        "columns":[{"columnId":"id","name":"ID"},{"columnId":"name","name":"姓名"}],
+    var li = new list({
+        "columns":[{"columnId":"id","name":"ID"},{"columnId":"name","name":"姓名",callback:function(v){
+            return "我的名字是:"+ v.name;
+        }}],
         "ContorlId":"#list",
-        "data":[{"id":"1","name":"张三","year":"20"},{"id":"2","name":"李四","year":"30"}]
+        "data":[{"id":"1","name":"张三","year":"20"},{"id":"2","name":"李四","year":"30"}],
+        "operateList":[{"text":"删除"},{"text":"编辑"},{"text":"其它"}]
+    })
+    $("#btnloadData").click(function(){
+        li.cfg.page.count=2;
+        li.render().on("changePage",function(index){
+            alert("选择的页码为:"+inde);
+        });
+    })
 
-    }).render();
 })

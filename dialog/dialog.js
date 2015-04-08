@@ -1,6 +1,7 @@
 ﻿define(function(require,exports,module){
 	var $ = require("jquery"),
 	Widget = require("widget"),
+        _ = require("template"),
 	css = require("dialogBox");
 	tempHTML = '<div id="<%=id%>" class="<%=skinClassName%>" style="display: block; width: <%=width%>px; left: 10px; top: 10px;">'
 	+'<!--弹框头部-->'
@@ -49,12 +50,22 @@ var Dialog = Widget.extend({
         }
 	},
 	events:{
-        "click a":function(e){
+        "click a":function(e){//触发底部按钮的事件,做了一个小技巧,就是将自定义的类型与自定义事件的key为同样的.
             var target = $(e.currentTarget);
             var btnType =$(this).attr("btnType") || "";
             this.trigger(btnType);
             this._closeDialog();
         }
+    },
+    render:function(){
+        this.$el = $(_.template(this.template,this.cfg));
+        $(document.body).append(this.$el);
+        this.bindEvent();
+        this.delegateEvents();
+        if(this.cfg.hasMask){
+            this._setupMask();
+        }
+        this._drag();
     },
     alert:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
@@ -118,6 +129,7 @@ var Dialog = Widget.extend({
         this.cfg.title="确认提示";
 		this.render(this.cfg);
 	},
+    //设置遮罩层
 	_setupMask:function(){
 		if (this.mask) {
 			this.mask.show();
@@ -127,9 +139,11 @@ var Dialog = Widget.extend({
 			$(document.body).append(this.mask)
 		}
 	},
+    //隐藏遮罩层
 	_hideMask:function(){
 		this.mask.hide();
 	},
+    //设置拖动
 	_drag:function(){
 		var p = this;
 		this.$el.bind("mousedown",function(event){
@@ -153,6 +167,7 @@ var Dialog = Widget.extend({
 			}
 		})
 	},
+    //设置弹出框出现的位置为上下左右全部居中
     _setDiaglogLocation:function(wrap){
             var $window = $(parent.window),
                 $document = $(parent.document),
@@ -169,12 +184,17 @@ var Dialog = Widget.extend({
             style.left = Math.max(parseInt(left), dl) + 'px';
             style.top = Math.max(parseInt(top), dt) + 'px';
     },
-	bindEvent:function(){
+	bindEvent:function(){//绑定自定义事件;
 		var p = this,buttons = this.cfg.buttons;
 		for(var i=0,j=buttons.length;i<j;i++){
 			p.on(buttons[i].btnType,buttons[i].clickEvent);
 		}
-	}
+	},
+    //销毁弹出层;
+    destroy:function(){
+        this.$el.off().remove();
+        this._hideMask();
+    }
 });
 module.exports = Dialog;
 })

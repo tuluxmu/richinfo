@@ -17,18 +17,8 @@
 			}
 		},
 		render:function(){
-			this.$el = $(_.template(this.template,this.cfg));
-			$(document.body).append(this.$el);
-			this.bindEvent();
-            this.delegateEvents();
-			if(this.cfg.hasMask){
-				this._setupMask();
-			}
-			this._drag();
 		},
 		destroy:function(){
-			this.$el.off().remove();
-			this._hideMask();
 		},
         delegateEvents:function(element, events, handler){
             var argus = [];
