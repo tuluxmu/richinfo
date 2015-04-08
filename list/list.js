@@ -14,13 +14,13 @@
                     +'</tr></tbody><tbody class="list"></tbody></table>',
         listTemp = '<%for(var z =0,len = data.length;z<len;z++) {%><tr index="<%=z%>">'
                 +'<td class="min"><input type="checkbox" name="chkbox" value="<%=z%>"></td>'
-                +'<% _scope.hashList={};_scope.hashList[z]=data[z]; %>'
+                +'<% _scope.hashList[z]=data[z]; %>'
                 +'<%for(var l=0,len1 =columns.length;l<len1;l++) {%>'
                 +'<td ><%-columns[l].callback?columns[l].callback.call(_scope,data[z]):data[z][columns[l].columnId]%></td><%}%>'
                 +'<%if(operateList.length>0){%>'
                     +'<td class="fixed">'
                     +'<%for(var f=0,k=operateList.length;f<k;f++) {%>'
-                        +'<span><%=operateList[f].text%></span>'
+                        +'<span handlerType="<%=operateList[f].handlerType%>"><%=operateList[f].text%></span>'
                     +'<%}%>'
                     +'</td><%}%>'
                 +'</tr><%}%>';
@@ -36,10 +36,12 @@
 
     var List = Widget.extend({
         initialize:function(cfg){
+            this.hashList={};
             this.cfg = $.extend(this.defauts,cfg);
             this.$el  = $(this.cfg.ContorlId);
             this.cfg._scope=this;//用于模版里面的回调的时候.重新指向作用域
             this.$el.append($(_.template(template,this.cfg)));//将模版插入页面中;等数据加载完毕后再渲染;
+            return this;
         },
         defauts:{
             "selectBtn":{
@@ -75,6 +77,13 @@
                 this.$el.find("[key=pageIndex]").html(index+"/"+ p.pageCount);
                 this.cfg.page.callback && this.cfg.page.callback.call(this,index);
                 this.trigger("pageChange",index);//自定义pageChange事件,外层可以直接绑定pageChange事件,用来解耦
+            },
+            "click [handlerType]":function(e){//设置触发点
+                var target = $(e.target),
+                    handlerType =target.attr("handlerType"),
+                    index = target.closest("tr").attr("index");
+                    selData = this.hashList[index];
+                this.trigger(handlerType,selData);
             }
         },
         render:function(){

@@ -1,5 +1,5 @@
 ﻿/**
- * 用span 模拟太多的坑了.受父级,以及当前的input的样式影响比较大,目前只做了对常遇到的做了处理.不到万不得已不要用;
+ * 用span 模拟太多的坑了.受父级,以及当前的input的样式影响比较大,目前除了密码框用的是span以外,其它全部是用的改value样式的方式;;
 
  * */
 
@@ -42,8 +42,13 @@
         },
         createSpan:function($input){
             var text = $input.attr("placeholder"),obj = $input[0];
-            var oWrapper = $('<span style="position:absolute; color:#ACA899;z-index:99; display:inline-block; overflow:hidden;">'+text+'</span>');
+            var oWrapper = $('<span>'+text+'</span>');
             oWrapper.css({
+                "position":"absolute",
+                "color":"#ACA899",
+                "z-index":99,
+                "display":"inline-block",
+                "overflow":"hidden",
                 "marginLeft":parseInt(getStyle(obj, 'marginLeft')) ? parseInt(getStyle(obj, 'marginLeft')) + 3  : 3 ,
                 "marginTop":parseInt(getStyle(obj, 'marginTop')) ? getStyle(obj, 'marginTop'): 1 ,
                 "paddingLeft": getStyle(obj, 'paddingLeft'),

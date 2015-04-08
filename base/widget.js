@@ -7,6 +7,7 @@
 				this.handlers[type]=[];
 			}
 			this.handlers[type].push(handler);
+            return this;
 		},
 		trigger:function(type,data){
 			if(this.handlers[type] instanceof Array){
@@ -15,6 +16,7 @@
 					handlers[i].apply(this,[].slice.call(arguments,1));
 				}
 			}
+            return this;
 		},
 		render:function(){
 		},

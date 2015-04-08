@@ -24,7 +24,14 @@
         }}],
         "ContorlId":"#list",
         "data":[{"id":"1","name":"张三","year":"20"},{"id":"2","name":"李四","year":"30"}],
-        "operateList":[{"text":"删除"},{"text":"编辑"},{"text":"其它"}]
+        "operateList":[{"text":"删除","handlerType":"del"},{"text":"编辑","handlerType":"edit"},{"text":"其它","handlerType":"other"}]
+    })
+    li.on("del",function(data){
+        alert("你选择了删除:数据id为:"+data.id);
+    }).on("edit",function(data){
+        alert("你选择了编辑");
+    }).on("other",function(data){
+        alert("你选择了其它");
     })
     $("#btnloadData").click(function(){
         li.cfg.page.count=2;
@@ -32,5 +39,7 @@
             alert("选择的页码为:"+inde);
         });
     })
-
+    $("#btngetData").click(function(){
+        alert(li.getSelectData());
+    })
 })
