@@ -28,7 +28,7 @@
 
 var Dialog = Widget.extend({
 	template:tempHTML,
-	maskTemp:'<div class="shareLayer"  style="display: block; height:700px;"></div>',
+	maskTemp:'<div class="shareLayer"  style="display: block; height:'+$(document.body).height()+'px;"></div>',
 	initialize:function(){
 		var p = this;
         this.cfg = {
@@ -43,29 +43,36 @@ var Dialog = Widget.extend({
                 {
                     text: "确定",
                     btnType:"ok",
-                    className:"abBtn_on",
-                    clickEvent:$.proxy(this._closeDialog,this)
+                    className:"abBtn_on"
+                },
+                {
+                    text: "取消",
+                    btnType:"cancel",
+                    className:"abBtn"
                 }
             ]
         }
+        return this;
 	},
 	events:{
         "click a":function(e){//触发底部按钮的事件,做了一个小技巧,就是将自定义的类型与自定义事件的key为同样的.
             var target = $(e.currentTarget);
-            var btnType =$(this).attr("btnType") || "";
-            this.trigger(btnType);
-            this._closeDialog();
+            var btnType =target.attr("btnType") || "";
+            if(this.trigger(btnType)){
+                this._closeDialog();
+            }
         }
     },
     render:function(){
         this.$el = $(_.template(this.template,this.cfg));
         $(document.body).append(this.$el);
-        this.bindEvent();
         this.delegateEvents();
         if(this.cfg.hasMask){
             this._setupMask();
         }
         this._drag();
+        this._setOffset();
+        return this;
     },
     alert:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
@@ -80,13 +87,14 @@ var Dialog = Widget.extend({
        +     '  </tbody>'
        +    ' </table>'
      + '  </div>';
+        this.cfg.buttons.pop();
 	   this.cfg = $.extend(this.cfg,cfg)
        this.render();
 	},
 	showDiv:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
 		this.cfg = $.extend(this.cfg,cfg)
-		this.render();
+		return this.render();
 	},
 	showIframe:function(url){
 		var html = '<iframe  style="width:100%;height:100%;" frameborder="0" ';
@@ -99,7 +107,7 @@ var Dialog = Widget.extend({
 			this.cfg.buttons=[];
 		}
 		this.cfg = $.extend(this.cfg,this.cfg)
-		this.render();
+        return this.render();
 	},
 	_closeDialog:function(){
 			this.destroy();
@@ -107,7 +115,6 @@ var Dialog = Widget.extend({
 	confirm:function(ao,callback){
 		var cfg={},p = this ;
         typeof(ao)==="string"?cfg.content = ao:cfg = ao;
-        cfg.id = "dialog"+new Date().getTime();
         cfg.content= ' <div class="Dialog_alert">'
        +    ' <table class="simpleWarm">'
         +    '  <tbody>'
@@ -119,13 +126,6 @@ var Dialog = Widget.extend({
        +    ' </table>'
      + '  </div>';
         this.cfg= $.extend(cfg,this.cfg);
-        typeof(ao)==="string"?this.cfg.buttons[0].clickEvent = callback:"";
-        this.cfg.buttons.push({
-            text: "取消",
-            btnType:"cancel",
-            className:"abBtn",
-            clickEvent:$.proxy(this._closeDialog,this)
-        })
         this.cfg.title="确认提示";
 		this.render(this.cfg);
 	},
@@ -168,7 +168,20 @@ var Dialog = Widget.extend({
 		})
 	},
     //设置弹出框出现的位置为上下左右全部居中
-    _setDiaglogLocation:function(wrap){
+    _setOffset:function(){
+            var width = this.cfg.width,
+                height = this.cfg.height+67,
+                wh = $(window).height(),
+                ww = $(window).width(),
+                left = (ww-width)/ 2,
+                top = (wh-height)/ 2;
+            this.$el.css({
+                top:top>0?top:0,
+                left:left
+            })
+           // windowWidth =
+        /*
+            var wrap = this.$el[0];
             var $window = $(parent.window),
                 $document = $(parent.document),
                 dl = $document.scrollLeft(),
@@ -183,13 +196,8 @@ var Dialog = Widget.extend({
 
             style.left = Math.max(parseInt(left), dl) + 'px';
             style.top = Math.max(parseInt(top), dt) + 'px';
+            */
     },
-	bindEvent:function(){//绑定自定义事件;
-		var p = this,buttons = this.cfg.buttons;
-		for(var i=0,j=buttons.length;i<j;i++){
-			p.on(buttons[i].btnType,buttons[i].clickEvent);
-		}
-	},
     //销毁弹出层;
     destroy:function(){
         this.$el.off().remove();

@@ -5,7 +5,10 @@
         css = require("listTable"),
         template = '<table cellspacing="0" cellpadding="0" width="100%" class="listTable">'
                    + '<tbody><tr>'
-                    +'<th class="min"><input name="selAll" type="checkbox"></th>'
+                    +'<th class="min">'
+                    +'<% if(selectBtn) {%>'
+                    +'<input name="selAll" type="<%=selectBtn.type%>">'
+                    +'<%}%></th>'
                     +'<%for(var i=0,len =columns.length;i<len;i++) {%>'
                     +'<th><%=columns[i].name%></th>'
                     +'<%}%>'
@@ -13,7 +16,10 @@
                     +'<th>操作</th><%}%>'
                     +'</tr></tbody><tbody class="list"></tbody></table>',
         listTemp = '<%for(var z =0,len = data.length;z<len;z++) {%><tr index="<%=z%>">'
-                +'<td class="min"><input type="checkbox" name="chkbox" value="<%=z%>"></td>'
+                +'<td class="min">'
+                +'<% if(selectBtn) {%>'
+                +'<input name="chkbox" name="" type="<%=selectBtn.type%>" value="<%=z%>">'
+                +'<%}%></td>'
                 +'<% _scope.hashList[z]=data[z]; %>'
                 +'<%for(var l=0,len1 =columns.length;l<len1;l++) {%>'
                 +'<td ><%-columns[l].callback?columns[l].callback.call(_scope,data[z]):data[z][columns[l].columnId]%></td><%}%>'

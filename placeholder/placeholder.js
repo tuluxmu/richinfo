@@ -1,6 +1,6 @@
 ﻿/**
  * 用span 模拟太多的坑了.受父级,以及当前的input的样式影响比较大,目前除了密码框用的是span以外,其它全部是用的改value样式的方式;;
-
+ 关于placeholder的颜色问题,在不同的浏览器下显示的颜色会有所区别.万恶的IE居然还无法通过设置CSS来指定默认的
  * */
 
 (function(){
@@ -58,16 +58,20 @@
                 "textIndent":getStyle(obj, 'textIndent'),
                 "cursor":"text"
             })
+            $input.before(oWrapper);
             oWrapper.on("click",function(){
                 $(this).hide();
+                $input.focus();
             })
             $input.on("blur",function(){
                 var $this = $(this);
                 if($this.val()=="") {
                     $this.prev().show();
                 }
+            }).on("click",function(){
+                oWrapper.hide();
             })
-            $input.before(oWrapper);
+
         }
     }
     function getStyle(obj, styleName) {

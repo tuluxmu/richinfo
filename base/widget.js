@@ -9,14 +9,21 @@
 			this.handlers[type].push(handler);
             return this;
 		},
+        off:function(type){
+            type ? this.handlers[type] && delete this.handlers[type] :  this.handlers={};
+        },
 		trigger:function(type,data){
-			if(this.handlers[type] instanceof Array){
+            var result =true;
+			if(this.handlers && this.handlers[type] instanceof Array){
 				var handlers = this.handlers[type] || [];
 				for (var i = 0, j = handlers.length; i < j; i++) {
-					handlers[i].apply(this,[].slice.call(arguments,1));
+                    if(handlers[i].apply(this,[].slice.call(arguments,1))===false){//当执行的方法有返回值的时候.阻止后续函数执行;
+                        result=false
+                        break;
+                    }
 				}
 			}
-            return this;
+            return result;
 		},
 		render:function(){
 		},
@@ -28,36 +35,23 @@
                 events = this.events;
                 element = this.$el;
             }
-
-            // widget.delegateEvents({
-            //   'click p': 'fn1',
-            //   'click li': 'fn2'
-            // })
             else if (argus.length === 1) {
                 events = element;
                 element = this.$el;
             }
 
-            // widget.delegateEvents('click p', function(ev) { ... })
             else if (argus.length === 2) {
                 handler = events;
                 events = element;
                 element = this.$el;
             }
 
-            // widget.delegateEvents(element, 'click p', function(ev) { ... })
             else {
                 //element || (element = this.$el)
                 //this._delegateElements || (this._delegateElements = [])
                 //this._delegateElements.push($(this.$el))
             }
 
-            // 'click p' => {'click p': handler}
-           /* if (isString(events) && isFunction(handler)) {
-                var o = {}
-                o[events] = handler
-                events = o
-            }*/
 
             // key 为 'event selector'
             for (var key in events) {
