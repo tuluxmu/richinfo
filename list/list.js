@@ -1,8 +1,12 @@
-﻿define(function(require,exports,module) {
+﻿/**
+ * 数据列表,CMD规范,还有部分功能没有从老版本上移植过来.
+ */
+define(function(require,exports,module) {
     var $ = require("jquery"),
         Widget = require("widget"),
         _ = require("template"),
         css = require("listTable"),
+        //列表模版;
         template = '<table cellspacing="0" cellpadding="0" width="100%" class="listTable">'
                    + '<tbody><tr>'
                     +'<th class="min">'
@@ -44,7 +48,7 @@
         initialize:function(cfg){
             this.hashList={};
             this.cfg = $.extend(this.defauts,cfg);
-            this.$el  = $(this.cfg.ContorlId);
+            this.$el  = $(this.cfg.ContorlId);//el元素类似于backobne的el,主要是为了限制dom查找范围,增加查找速度
             this.cfg._scope=this;//用于模版里面的回调的时候.重新指向作用域
             this.$el.append($(_.template(template,this.cfg)));//将模版插入页面中;等数据加载完毕后再渲染;
             return this;

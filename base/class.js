@@ -1,5 +1,11 @@
-﻿function Class(o) {
-  // Convert existed function to Class.
+﻿/**
+ * 通用类,所有的类的创建全部用此类创建;
+ * @param o
+ * @returns {*}
+ * @constructor
+ */
+
+function Class(o) {
   if (!(this instanceof Class) && isFunction(o)) {
     return classify(o)
   }
@@ -7,41 +13,32 @@
 
 window.Class = Class;
 
-
+//创建类
 Class.create = function(parent1, properties) {
   if (!isFunction(parent1)) {
     properties = parent1;
     parent1 = null;
   }
-
   properties || (properties = {})
   parent1 || (parent1 = properties.Extends || Class)
   properties.Extends = parent1
 
-  // The created class constructor
   function SubClass() {
-    // Call the parent constructor.
     parent1.apply(this, arguments)
-
-    // Only call initialize in self constructor.
     if (this.constructor === SubClass && this.initialize) {
       this.initialize.apply(this, arguments);
     }
   }
 
-  // Inherit class (static) properties from parent.
   if (parent1 !== Class) {
     mix(SubClass, parent1, parent1.StaticsWhiteList)
   }
 
-  // Add instance properties to the subclass.
-  
+
   implement.call(SubClass, properties)
 
-  // Make subclass extendable.
   return classify(SubClass)
 }
-
 
 function implement(properties) {
   var key, value
@@ -57,8 +54,7 @@ function implement(properties) {
   }
 }
 
-
-// Create a sub Class based on `Class`.
+//继承方法,所有通过此类创建的类都会具有继承的方法
 Class.extend = function(properties) {
   properties || (properties = {})
   properties.Extends = this
@@ -69,32 +65,21 @@ Class.guid=0;
 
 function classify(cls) {
   cls.extend = Class.extend
- // cls.implement = implement
   return cls
 }
 
 
-// Mutators define special properties.
+// 特殊属性.特殊处理..
 Class.Mutators = {
 
   'Extends': function(parent) {
     var existed = this.prototype
     var proto = createProto(parent.prototype)
-
-    // Keep existed properties.
     mix(proto, existed)
-
-    // Enforce the constructor to be what we expect.
     proto.constructor = this
-
-    // Set the prototype chain to inherit from `parent`.
     this.prototype = proto
-
-    // Set a convenience property in case the parent's prototype is
-    // needed later.
     this.superclass = parent.prototype
   },
-
   'Implements': function(items) {
     isArray(items) || (items = [items])
     var proto = this.prototype, item
@@ -103,18 +88,14 @@ Class.Mutators = {
       mix(proto, item.prototype || item)
     }
   },
-
   'Statics': function(staticProperties) {
     mix(this, staticProperties)
   }
 }
 
-
-// Shared empty constructor function to aid in prototype-chain creation.
+//性能最好的原型复制,此方法为性能最佳;
 function Ctor() {
 }
-
-// See: http://jsperf.com/object-create-vs-new-ctor
 var createProto = Object.__proto__ ?
     function(proto) {
       return { __proto__: proto }
@@ -125,16 +106,10 @@ var createProto = Object.__proto__ ?
     }
 
 
-// Helpers
-// ------------
-
 function mix(r, s, wl) {
-  // Copy "all" properties including inherited ones.
   for (var p in s) {
     if (s.hasOwnProperty(p)) {
       if (wl && indexOf(wl, p) === -1) continue
-
-      // 在 iPhone 1 代等设备的 Safari 中，prototype 也会被枚举出来，需排除
       if (p !== 'prototype') {
         r[p] = s[p]
       }

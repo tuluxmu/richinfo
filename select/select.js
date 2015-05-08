@@ -1,9 +1,15 @@
-﻿define(function(require,exports,module){
-	
+﻿/**
+ * 下拉列表框,继承于Widget,如果该列表框不满足不了需要,可以直接再继承该类,然后再在上面做扩展;
+ * 所有的dom操作,全部都会只在$el下去操作.减少dom查找性能损耗;s数据的Key 目前要求是唯一的;,后续可以扩展下;
+ *
+ */
+
+define(function(require,exports,module){
 	var $ = require("jquery"),
 	_ = require("template"),
 	Widget = require("widget"),
 	css = require("dropList_cs");
+    //模版;
 	template = '<div class="dropList_cs" id="<%=id%>" style="margin:20px;">'
 				+'<a href="javascript:;" class="DLicon DLiconAct" title="展开"><i class="i-DLicon"></i></a>'
 					+'<span class="DLtxt" style=" width:80px;" key="<%=list[0][datakey]%>"><%=list[0][dataValue]%></span>'
@@ -19,15 +25,15 @@
 		initialize:function(cfg){
 			this.cfg={
 				id:"drp"+Class.guid++,
-				dataValue:"text",
-				datakey:"value",
+				dataValue:"text",//显示的文本对应的数据属性
+				datakey:"value",//取值的value对应的数据属性;
 				width:80,
 				height:120,
 				disabled:false
 			}
             this._hashList={};
 			this.cfg = $.extend(this.cfg,cfg);
-            this._cacheData();
+            this._cacheData();//缓存数据;
 
 		},
         events:{
@@ -35,6 +41,14 @@
             "click .DLiconAct":function(){
                 this.trigger("click");
             }
+        },
+        render:function(){
+            this.cfg.hashList=this._hashList;
+            this.$el = $(_.template(this.template,this.cfg));
+            $(this.cfg.domId).append(this.$el);
+            this.bindEvent();
+            this.delegateEvents();
+            return this;
         },
         //创建缓存对象,用HASH存储
         _cacheData:function(){
@@ -63,17 +77,10 @@
 		setDisabled:function(){
 			this.$el.off();
 		},
-		render:function(){
-            this.cfg.hashList=this._hashList;
-			this.$el = $(_.template(this.template,this.cfg));
-			$(this.cfg.domId).append(this.$el);
-			this.bindEvent();
-            this.delegateEvents();
-			return this;
-		},
+
         //设置选中的结果
 		_selectOption:function(key,text){
-			this.$el.find(".DLtxt").html(text).attr("key",key);
+			this.$el.find(".DLtxt").text(text).attr("key",key);
 		},
         //隐藏列表
 		_hideList:function(){
@@ -87,7 +94,8 @@
         },
 		bindEvent:function(){
 			var p = this;
-			this.on("change",this._selectOption);
+			this.on("change",this._selectOption);//绑定选择改变事件;
+            //下面两个主要是做下拉的时候的动态效果;
 			this.on("click",function(){
 				p.$el.find(".dropList_csUL").stop(true,true).slideDown(200)
 			})

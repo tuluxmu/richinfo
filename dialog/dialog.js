@@ -1,8 +1,13 @@
-﻿define(function(require,exports,module){
+﻿/**
+ * 模态对话框;,iframe的待完善.
+ *  所有的dom操作,全部都会只在$el下去操作.减少dom查找性能损耗;
+ */
+define(function(require,exports,module){
 	var $ = require("jquery"),
 	Widget = require("widget"),
         _ = require("template"),
 	css = require("dialogBox");
+    //下面为弹出层的模版,后续考虑专门做一个模版库,
 	tempHTML = '<div id="<%=id%>" class="<%=skinClassName%>" style="display: block; width: <%=width%>px; left: 10px; top: 10px;">'
 	+'<!--弹框头部-->'
    +' <div class="dialogBoxTitle">'
@@ -28,7 +33,8 @@
 
 var Dialog = Widget.extend({
 	template:tempHTML,
-	maskTemp:'<div class="shareLayer"  style="display: block; height:'+$(document.body).height()+'px;"></div>',
+	maskTemp:'<div class="shareLayer"  style="display: block;"></div>',//遮罩层模版;
+    mask:"",
 	initialize:function(){
 		var p = this;
         this.cfg = {
@@ -54,6 +60,9 @@ var Dialog = Widget.extend({
         }
         return this;
 	},
+    /**
+     * 事件处理,模拟backbone的处理机制;
+     */
 	events:{
         "click a":function(e){//触发底部按钮的事件,做了一个小技巧,就是将自定义的类型与自定义事件的key为同样的.
             var target = $(e.currentTarget);
@@ -63,17 +72,25 @@ var Dialog = Widget.extend({
             }
         }
     },
+    /**
+     * 渲染
+     * @returns {Dialog}
+     */
     render:function(){
-        this.$el = $(_.template(this.template,this.cfg));
+        this.$el = $(_.template(this.template,this.cfg));//$el 模拟backbone的$el
         $(document.body).append(this.$el);
-        this.delegateEvents();
         if(this.cfg.hasMask){
             this._setupMask();
         }
+        this.delegateEvents();
         this._drag();
         this._setOffset();
         return this;
     },
+    /**
+     * alert 提示框
+     * @param ao
+     */
     alert:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
 		cfg.content='<!--Dialog_alert-->'
@@ -91,11 +108,21 @@ var Dialog = Widget.extend({
 	   this.cfg = $.extend(this.cfg,cfg)
        this.render();
 	},
+    /**
+     * 弹出div
+     * @param ao
+     * @returns {*}
+     */
 	showDiv:function(ao){
 		var cfg=typeof(ao)==="string"?{content:ao}:ao;
 		this.cfg = $.extend(this.cfg,cfg)
 		return this.render();
 	},
+    /**
+     * 弹出嵌入iframe  待完善
+     * @param url
+     * @returns {*}
+     */
 	showIframe:function(url){
 		var html = '<iframe  style="width:100%;height:100%;" frameborder="0" ';
 	    if (url) {
@@ -109,9 +136,18 @@ var Dialog = Widget.extend({
 		this.cfg = $.extend(this.cfg,this.cfg)
         return this.render();
 	},
+    /**
+     * 关闭遮罩层
+     * @private
+     */
 	_closeDialog:function(){
 			this.destroy();
 	},
+    /**
+     * 确认提示框
+     * @param ao 参数扩展,如果只是简单的提示,则这个参数传递为 提示内容,另外一个参数传递为回调,为了方便,但是不推荐这么写,最好用on绑定确认和取消按钮;
+     * @param callback  //确定的回调函数,
+     */
 	confirm:function(ao,callback){
 		var cfg={},p = this ;
         typeof(ao)==="string"?cfg.content = ao:cfg = ao;
@@ -126,6 +162,7 @@ var Dialog = Widget.extend({
        +    ' </table>'
      + '  </div>';
         this.cfg= $.extend(cfg,this.cfg);
+        callback && this.on("ok",callback);
         this.cfg.title="确认提示";
 		this.render(this.cfg);
 	},
@@ -138,6 +175,7 @@ var Dialog = Widget.extend({
 			this.mask = $(this.maskTemp);
 			$(document.body).append(this.mask)
 		}
+        this.mask.height($(document).height());
 	},
     //隐藏遮罩层
 	_hideMask:function(){
@@ -179,24 +217,6 @@ var Dialog = Widget.extend({
                 top:top>0?top:0,
                 left:left
             })
-           // windowWidth =
-        /*
-            var wrap = this.$el[0];
-            var $window = $(parent.window),
-                $document = $(parent.document),
-                dl = $document.scrollLeft(),
-                dt = $document.scrollTop(),
-                ww = $window.width(),
-                wh = $window.height(),
-                ow = wrap.offsetWidth,
-                oh = wrap.offsetHeight,
-                left = (ww - ow) / 2 + dl,
-                top = (wh - oh) * 382 / 1000 + dt,// 黄金比例
-                style = wrap.style;
-
-            style.left = Math.max(parseInt(left), dl) + 'px';
-            style.top = Math.max(parseInt(top), dt) + 'px';
-            */
     },
     //销毁弹出层;
     destroy:function(){
